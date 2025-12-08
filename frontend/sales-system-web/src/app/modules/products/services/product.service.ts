@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment'; // Asegúrate de tener esto o usa url directa
+import { environment } from '../../../../environments/environment'; // Asegúrate de tener esto o usa url directa
 import { Product, ProductCreate } from '../interfaces/product.interface';
 
 export interface Category {

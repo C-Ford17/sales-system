@@ -34,6 +34,6 @@ export const roleGuard: CanActivateFn = (route, state) => {
   });
 
   // Redirigir a una ruta segura (ej. Dashboard o POS)
-  router.navigate(['/admin/dashboard']);
+  router.navigate(['/panel/dashboard']);
   return false;
 };

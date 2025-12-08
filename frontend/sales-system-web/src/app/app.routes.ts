@@ -8,14 +8,14 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 
 // Componentes
 import { LoginComponent } from './modules/auth/login/login.component';
-import { DashboardComponent } from './modules/admin/dashboard/dashboard.component';
-import { ProductListComponent } from './modules/admin/products/product-list/product-list.component';
-import { PosComponent } from './modules/admin/sales/pos/pos.component';
-import { SalesListComponent } from './modules/admin/sales/sales-list/sales-list.component';
-import { UserListComponent } from './modules/admin/users/user-list/user-list.component';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { ProductListComponent } from './modules/products/product-list/product-list.component';
+import { PosComponent } from './modules/sales/pos/pos.component';
+import { SalesListComponent } from './modules/sales/sales-list/sales-list.component';
+import { UserListComponent } from './modules/users/user-list/user-list.component';
 export const routes: Routes = [
     // Redirección inicial
-    { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: 'panel/dashboard', pathMatch: 'full' },
 
     // Rutas de Autenticación
     {
@@ -29,7 +29,7 @@ export const routes: Routes = [
 
     // Rutas de Administración (Protegidas)
     {
-        path: 'admin',
+        path: 'panel',
         component: MainLayoutComponent,
         canActivate: [AuthGuard], // Primero verifica login
         children: [
