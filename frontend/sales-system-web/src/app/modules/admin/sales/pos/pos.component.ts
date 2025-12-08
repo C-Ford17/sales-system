@@ -91,6 +91,8 @@ export class PosComponent implements OnInit {
         alert('¡Venta registrada con éxito!');
         this.cartService.clearCart();
         this.customerName = '';
+        this.searchControl.setValue('');
+        this.filteredProducts = [];
       },
       error: (err) => {
         console.error(err);
