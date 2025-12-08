@@ -1,0 +1,130 @@
+.sidenav {
+    width: 260px;
+    background: var(--white);
+    border-right: 1px solid var(--border-color);
+}
+
+.logo-container {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding-left: 24px;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 80px);
+}
+
+.nav-spacer {
+    flex: 1;
+}
+
+/* Estilos de Links */
+mat-nav-list a {
+    margin: 4px 16px;
+    border-radius: 8px;
+    color: var(--text-gray);
+}
+
+mat-nav-list a.active-link {
+    background-color: #E6FFFA;
+    /* Verde muy claro */
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+mat-nav-list a.active-link mat-icon {
+    color: var(--primary-color);
+}
+
+/* Perfil inferior sidebar */
+.user-mini-profile {
+    margin: 16px;
+    padding: 12px;
+    background: var(--bg-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-mini-profile .avatar {
+    width: 36px;
+    height: 36px;
+    background: #E5E7EB;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.user-info .name {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.user-info .role {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--text-gray);
+}
+
+.logout-icon {
+    font-size: 1.2rem;
+    color: var(--text-gray);
+}
+
+/* Header Principal */
+.main-header {
+    background: transparent;
+    padding: 0 32px;
+    height: 80px;
+}
+
+.header-icon {
+    color: var(--text-gray);
+}
+
+.header-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.content-wrapper {
+    padding: 32px 40px !important;
+    /* Más padding horizontal */
+    max-width: 1600px;
+    /* Limitar ancho máximo en pantallas gigantes */
+    margin: 0 auto;
+    /* Centrar contenido si la pantalla es muy ancha */
+}
