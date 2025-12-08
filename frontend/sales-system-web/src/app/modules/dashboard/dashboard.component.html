@@ -1,12 +1,18 @@
 <div class="dashboard-header">
     <div class="header-text">
         <h1>Dashboard</h1>
-        <p>Welcome, Admin Name</p>
+        <p>Welcome, {{ currentUser?.fullName }}</p>
     </div>
     <div class="header-actions">
-        <button mat-stroked-button class="date-btn">
-            Last 30 days <mat-icon>keyboard_arrow_down</mat-icon>
+        <button mat-stroked-button class="date-btn" [matMenuTriggerFor]="dateMenu">
+            {{ currentRange }} <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
+        <mat-menu #dateMenu="matMenu">
+            <button mat-menu-item (click)="changeRange('Últimos 7 días', 7)">Últimos 7 días</button>
+            <button mat-menu-item (click)="changeRange('Últimos 30 días', 30)">Últimos 30 días</button>
+            <button mat-menu-item (click)="changeRange('Últimos 90 días', 90)">Últimos 3 meses</button>
+        </mat-menu>
+
         <button class="btn-primary" mat-button>
             New Report
         </button>
@@ -17,7 +23,7 @@
 <div class="stats-grid">
     <mat-card *ngFor="let stat of stats" class="p-4">
         <div class="stat-content">
-            <p class="text-gray">{{ stat.title }}</p>
+            <p class="text-gray">{{ salesPeriodLabel }}</p>
             <h2 class="text-2xl font-bold">{{ stat.value }}</h2>
             <span [class]="stat.isPositive ? 'text-green' : 'text-red'">
                 {{ stat.change }}
@@ -31,11 +37,15 @@
     <!-- Gráfico Lineal -->
     <mat-card class="chart-card">
         <div class="card-header">
-            <h3>Ventas Diarias (Últimos 7 Días)</h3>
+            <h3>{{ chartPeriodLabel }}</h3>
             <div class="big-number">
-                $8,920 <span class="text-green text-sm">+15.3%</span>
+                <!-- Usar variable dinámica -->
+                ${{ totalWeeklySales | number:'1.0-0' }}
+                <!-- Puedes calcular el porcentaje real o quitarlo por ahora -->
+                <!-- <span class="text-green text-sm">+15.3%</span> -->
             </div>
         </div>
+
         <div class="chart-container">
             <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="'line'">
             </canvas>
@@ -52,9 +62,11 @@
             </canvas>
             <!-- Texto central dona -->
             <div class="center-text">
-                <h3>180</h3>
-                <p>Ventas</p>
+                <!-- Usar variable dinámica -->
+                <h3>{{ totalItemsSold }}</h3>
+                <p>Items</p>
             </div>
+
         </div>
     </mat-card>
 </div>
@@ -76,22 +88,42 @@
             </thead>
             <tbody>
                 <tr *ngFor="let sale of recentSales">
+                    <!-- Columna 1: ID Venta (usar displayId) -->
                     <td class="font-bold">{{ sale.id }}</td>
+
+                    <!-- Columna 2: Cliente -->
                     <td>{{ sale.client }}</td>
-                    <td>{{ sale.date }}</td>
+
+                    <!-- Columna 3: Fecha -->
+                    <td>{{ sale.date | date:'shortDate' }}</td>
+
+                    <!-- Columna 4: Estado -->
                     <td><span [class]="getStatusClass(sale.status)">{{ sale.status }}</span></td>
+
+                    <!-- Columna 5: Total -->
                     <td class="font-bold">{{ sale.amount }}</td>
-                    <td><button mat-button color="primary">Ver</button></td>
+
+                    <!-- Columna 6: Acción -->
+                    <td>
+                        <button mat-button color="primary" (click)="viewSaleDetail(sale.originalId)">Ver</button>
+                    </td>
                 </tr>
+
             </tbody>
         </table>
 
         <div class="table-footer">
-            <span>Showing 1 to 5 of 57 results</span>
+            <!-- Texto informativo simple -->
+            <span>Mostrando las últimas 5 ventas</span>
+
+            <!-- Botón único que redirige al historial -->
             <div class="pagination">
-                <button mat-stroked-button>Previous</button>
-                <button mat-stroked-button>Next</button>
+                <button mat-stroked-button color="primary" routerLink="/panel/sales/history">
+                    Ver Historial Completo
+                    <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                </button>
             </div>
         </div>
+
     </mat-card>
 </div>

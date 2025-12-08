@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { BaseChartDirective } from 'ng2-charts'; // Importar directiva de gráficos
+import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { DashboardService, DashboardStats } from './services/dashboard.service';
+import { SalesService } from '../sales/services/sales.service'; // Reutilizamos servicio ventas para la tabla
+import { AuthService } from '../../shared/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SaleDetailDialogComponent } from '../sales/sale-detail-dialog/sale-detail-dialog.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,87 +20,168 @@ import { ChartConfiguration, ChartOptions } from 'chart.js';
     CommonModule,
     MatCardModule,
     MatIconModule,
+    RouterModule,
     MatButtonModule,
     MatMenuModule,
-    BaseChartDirective // Agregar aquí
+    BaseChartDirective
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  private dashboardService = inject(DashboardService);
+  private salesService = inject(SalesService);
+  private authService = inject(AuthService);
+  private dialog = inject(MatDialog);
+  currentUser = this.authService.getCurrentUser();
+  totalWeeklySales: number = 0;
+  totalItemsSold: number = 0;
+  incomeChange: number = 0;
+  salesChange: number = 0;
+  currentRange: string = 'Últimos 7 días';
+  salesPeriodLabel: string = 'Ventas (7 días)';
+  chartPeriodLabel: string = 'Ventas Diarias (Últimos 7 días)';
 
-  // Stats Cards
+
+  // Stats Cards (Inicializados en 0)
   stats = [
-    { title: 'Ingresos Semanales', value: '$12,450', change: '+5.2%', isPositive: true },
-    { title: 'Ventas (Últimos 7 días)', value: '312', change: '-1.8%', isPositive: false },
-    { title: 'Productos Activos', value: '85', change: '+3', isPositive: true },
-    { title: 'Usuarios Activos', value: '42', change: '+10%', isPositive: true }
+    { title: 'Ingresos Semanales', value: '$0', change: '0%', isPositive: true },
+    { title: 'Ventas (7 días)', value: '0', change: '0%', isPositive: true },
+    { title: 'Productos Activos', value: '0', change: '', isPositive: true },
+    { title: 'Usuarios Activos', value: '0', change: '', isPositive: true }
   ];
 
-  // Configuración Gráfico de Líneas (Ventas Diarias)
+  // Gráfico Líneas (Ventas Diarias)
   public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-    datasets: [
-      {
-        data: [65, 59, 80, 81, 56, 120, 90],
-        label: 'Ventas',
-        fill: true,
-        tension: 0.4, // Curva suave
-        borderColor: '#00E676',
-        backgroundColor: 'rgba(0, 230, 118, 0.1)',
-        pointBackgroundColor: '#fff',
-        pointBorderColor: '#00E676',
-        pointHoverBackgroundColor: '#00E676',
-        pointHoverBorderColor: '#fff'
-      }
-    ]
+    labels: [],
+    datasets: [{
+      data: [],
+      label: 'Ventas ($)',
+      fill: true,
+      tension: 0.4,
+      borderColor: '#00E676',
+      backgroundColor: 'rgba(0, 230, 118, 0.1)',
+      pointBackgroundColor: '#fff',
+      pointBorderColor: '#00E676'
+    }]
   };
+
   public lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { display: false } }, // Ocultar leyenda
+    plugins: { legend: { display: false } },
     scales: {
-      y: { display: false }, // Ocultar eje Y para que se vea limpio como el diseño
+      y: { display: false },
       x: { grid: { display: false } }
     }
   };
 
-  // Configuración Gráfico de Dona (Categorías)
+  // Gráfico Dona (Categorías)
   public doughnutChartData: ChartConfiguration<'doughnut'>['data'] = {
-    labels: ['Electrónica', 'Ropa', 'Otros'],
-    datasets: [
-      {
-        data: [180, 80, 40],
-        backgroundColor: ['#00E676', '#3f51b5', '#E5E7EB'],
-        hoverBackgroundColor: ['#00C853', '#303f9f', '#D1D5DB'],
-        borderWidth: 0,
-        hoverOffset: 4
-      }
-    ]
+    labels: [],
+    datasets: [{
+      data: [],
+      backgroundColor: ['#00E676', '#3f51b5', '#FF4081', '#FFC107', '#E5E7EB'],
+      borderWidth: 0,
+      hoverOffset: 4
+    }]
   };
+
   public doughnutChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
-    maintainAspectRatio: false, // <--- ESTO ES CRÍTICO
-    cutout: '75%', // Hace el agujero más grande (estilo anillo delgado)
+    maintainAspectRatio: false,
+    cutout: '75%',
     plugins: {
-      legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 20 } }
+      legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle' } }
     }
   };
 
-  recentSales = [
-    { id: '#12548', client: 'Juan Pérez', date: '2023-10-27', status: 'Completado', amount: '$250.00' },
-    { id: '#12547', client: 'Ana Gómez', date: '2023-10-26', status: 'Pendiente', amount: '$120.50' },
-    { id: '#12546', client: 'Carlos Ruiz', date: '2023-10-26', status: 'Completado', amount: '$75.20' },
-    { id: '#12545', client: 'Lucía Fernández', date: '2023-10-25', status: 'Cancelado', amount: '$50.00' },
-    { id: '#12544', client: 'Miguel Torres', date: '2023-10-24', status: 'Completado', amount: '$310.75' }
-  ];
+  // Tabla Últimas Ventas
+  recentSales: any[] = [];
+
+  ngOnInit() {
+    this.loadDashboardStats();
+    this.loadRecentSales();
+  }
+
+  changeRange(rangeLabel: string, days: number) {
+    this.currentRange = rangeLabel;
+
+    // Actualizar etiquetas visuales
+    this.salesPeriodLabel = `Ventas (${days} días)`;
+    this.chartPeriodLabel = `Ventas Diarias (Últimos ${days} días)`;
+
+    this.loadDashboardStats(days);
+  }
+
+  viewSaleDetail(saleId: string) {
+    // Nota: sale.id en recentSales debe ser el GUID, no el número "VEN-..." para buscarlo
+    // Si tu recentSales trae el GUID en una propiedad oculta, úsala.
+    // Si no, asegúrate de traer el ID real desde el backend.
+    this.dialog.open(SaleDetailDialogComponent, {
+      width: '600px',
+      data: saleId
+    });
+  }
+  loadDashboardStats(days: number = 7) {
+    this.dashboardService.getStats(days).subscribe({
+      next: (data) => {
+        this.totalWeeklySales = data.weeklyIncome;
+        this.incomeChange = data.incomeChangePercentage;
+        this.salesChange = data.salesChangePercentage;
+        // 1. Actualizar Tarjetas
+        this.stats[0].change = (this.incomeChange > 0 ? '+' : '') + this.incomeChange + '%';
+        this.stats[0].isPositive = this.incomeChange >= 0;
+        this.stats[1].change = (this.salesChange > 0 ? '+' : '') + this.salesChange + '%';
+        this.stats[1].isPositive = this.salesChange >= 0;
+        this.stats[0].value = `$${data.weeklyIncome.toLocaleString()}`; // Ingresos
+        this.stats[1].value = data.weeklySalesCount.toString();         // Cantidad Ventas
+        this.stats[2].value = data.activeProducts.toString();           // Productos
+        this.stats[3].value = data.activeUsers.toString();              // Usuarios
+
+        // 2. Actualizar Gráfico Líneas
+        this.lineChartData.labels = data.daysLabels;
+        this.lineChartData.datasets[0].data = data.dailySales;
+
+        // Forzar actualización del gráfico (importante en ng2-charts)
+        this.lineChartData = { ...this.lineChartData };
+
+        // 3. Actualizar Gráfico Dona
+        this.doughnutChartData.labels = data.salesByCategory.map(c => c.categoryName);
+        this.doughnutChartData.datasets[0].data = data.salesByCategory.map(c => c.salesCount);
+        this.totalItemsSold = data.salesByCategory.reduce((acc, curr) => acc + curr.salesCount, 0);
+        this.doughnutChartData = { ...this.doughnutChartData };
+
+
+      },
+      error: (err) => console.error('Error dashboard stats', err)
+    });
+  }
+
+  loadRecentSales() {
+    // Reutilizamos el endpoint de ventas, pidiendo pocas y ordenadas
+    // Si tu endpoint soporta paginación, pide page=1&pageSize=5
+    // Si no, trae todas y corta en el frontend (temporalmente)
+    this.salesService.getSales().subscribe({
+      next: (sales) => {
+        this.recentSales = sales.slice(0, 5).map(s => ({
+          originalId: s.id,
+          id: s.saleNumber,
+          client: s.userName, // O customerName si lo agregaste al DTO de lista
+          date: s.createdAt,
+          status: s.status,
+          amount: s.totalAmount
+        }));
+      }
+    });
+  }
 
   getStatusClass(status: string): string {
-    switch (status) {
-      case 'Completado': return 'badge badge-success';
-      case 'Pendiente': return 'badge badge-warning';
-      case 'Cancelado': return 'badge badge-danger';
-      default: return 'badge';
+    switch (status.toLowerCase()) {
+      case 'completed': return 'badge-success'; // Asegúrate de tener estas clases en CSS
+      case 'pending': return 'badge-warning';
+      case 'cancelled': return 'badge-danger';
+      default: return 'badge-gray';
     }
   }
 }
