@@ -13,6 +13,7 @@ import { ProductListComponent } from './modules/products/product-list/product-li
 import { PosComponent } from './modules/sales/pos/pos.component';
 import { SalesListComponent } from './modules/sales/sales-list/sales-list.component';
 import { UserListComponent } from './modules/users/user-list/user-list.component';
+import { SettingsComponent } from './modules/settings/settings.component';
 export const routes: Routes = [
     // Redirección inicial
     { path: '', redirectTo: 'panel/dashboard', pathMatch: 'full' },
@@ -70,6 +71,7 @@ export const routes: Routes = [
                 data: { roles: ['Admin'] },
                 canActivate: [roleGuard]
             },
+            { path: 'settings', component: SettingsComponent },
 
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]

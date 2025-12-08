@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SistemaVentas.API.Models.DTOs.Users;
 using SistemaVentas.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SistemaVentas.API.Controllers
 {
@@ -55,5 +56,34 @@ namespace SistemaVentas.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        [Authorize]
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null) return Unauthorized();
+
+            var userId = Guid.Parse(userIdClaim);
+            
+            try {
+                // 1. Convertir UpdateProfileDto -> UpdateUserDto
+                var fullDto = new UpdateUserDto
+                {
+                    FullName = dto.FullName,
+                    Phone = dto.Phone,
+                    // Los demás campos quedan nulos (Email, Status, RoleId)
+                    // Asegúrate que UpdateUserDto permita nulos (string?)
+                };
+
+                // 2. Llamar al servicio con el tipo correcto
+                var user = await _userService.UpdateUserAsync(userId, fullDto);
+                return Ok(user);
+
+            } catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

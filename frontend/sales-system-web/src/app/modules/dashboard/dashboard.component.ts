@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
   private reportsService = inject(ReportsService);
-  currentUser = this.authService.getCurrentUser();
+  currentUser: any;
   totalWeeklySales: number = 0;
   totalItemsSold: number = 0;
   incomeChange: number = 0;
@@ -105,6 +105,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.loadDashboardStats();
     this.loadRecentSales();
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   changeRange(rangeLabel: string, days: number) {

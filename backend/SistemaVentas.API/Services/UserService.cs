@@ -58,11 +58,10 @@ namespace SistemaVentas.API.Services
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) throw new Exception("Usuario no encontrado");
-
-            user.FullName = dto.FullName ?? user.FullName;
-            user.Email = dto.Email ?? user.Email;
-            user.Status = dto.Status ?? user.Status;
-            
+            if (dto.FullName != null) user.FullName = dto.FullName;
+            if (dto.Email != null) user.Email = dto.Email;
+            if (dto.Status != null) user.Status = dto.Status;
+            if (dto.Phone != null) user.Phone = dto.Phone;
             if (dto.RoleId.HasValue) user.RoleId = dto.RoleId.Value;
 
             if (!string.IsNullOrEmpty(dto.Password))

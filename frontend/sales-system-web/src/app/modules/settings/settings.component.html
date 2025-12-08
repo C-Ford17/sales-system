@@ -1,0 +1,111 @@
+<div class="page-container">
+    <h1 class="page-title">Configuración</h1>
+
+    <div class="settings-layout">
+        <!-- Tarjeta Principal -->
+        <mat-card class="settings-card">
+            <mat-tab-group animationDuration="300ms" class="custom-tabs">
+
+                <!-- Pestaña 1: Mi Cuenta -->
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="tab-icon">person</mat-icon> Mi Cuenta
+                    </ng-template>
+
+                    <div class="tab-content">
+                        <!-- Cabecera Perfil -->
+                        <div class="profile-header">
+                            <div class="avatar-large">{{ getInitials() }}</div>
+                            <div class="profile-info">
+                                <h2>{{ currentUser?.fullName }}</h2>
+                                <span class="role-badge">{{ currentUser?.roleName }}</span>
+                            </div>
+                        </div>
+
+                        <div class="forms-grid">
+                            <!-- Formulario Datos Básicos -->
+                            <div class="form-section">
+                                <h3>Información Personal</h3>
+                                <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Nombre Completo</mat-label>
+                                        <input matInput formControlName="fullName">
+                                        <mat-icon matSuffix>badge</mat-icon>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Telefono</mat-label>
+                                        <input matInput formControlName="phone">
+                                        <mat-icon matSuffix>phone</mat-icon>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Correo Electrónico</mat-label>
+                                        <input matInput formControlName="email">
+                                        <mat-icon matSuffix>email</mat-icon>
+                                        <mat-hint>Contacta al admin para cambiar tu email</mat-hint>
+                                    </mat-form-field>
+
+                                    <div class="actions">
+                                        <button mat-raised-button color="primary"
+                                            [disabled]="profileForm.invalid || profileForm.pristine">
+                                            Guardar Cambios
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Formulario Contraseña -->
+                            <div class="form-section password-section">
+                                <h3>Seguridad</h3>
+                                <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Contraseña Actual</mat-label>
+                                        <input matInput [type]="hideCurrentPass ? 'password' : 'text'"
+                                            formControlName="currentPassword">
+                                        <button mat-icon-button matSuffix (click)="hideCurrentPass = !hideCurrentPass"
+                                            type="button">
+                                            <mat-icon>{{ hideCurrentPass ? 'visibility_off' : 'visibility' }}</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Nueva Contraseña</mat-label>
+                                        <input matInput [type]="hideNewPass ? 'password' : 'text'"
+                                            formControlName="newPassword">
+                                        <button mat-icon-button matSuffix (click)="hideNewPass = !hideNewPass"
+                                            type="button">
+                                            <mat-icon>{{ hideNewPass ? 'visibility_off' : 'visibility' }}</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('minlength')">
+                                            Mínimo 6 caracteres
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <div class="actions">
+                                        <button mat-stroked-button color="warn" [disabled]="passwordForm.invalid">
+                                            Actualizar Contraseña
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- Pestaña 2: Sistema (Solo Admin) -->
+                <mat-tab *ngIf="isAdmin">
+                    <ng-template mat-tab-label>
+                        <mat-icon class="tab-icon">store</mat-icon> Tienda
+                    </ng-template>
+
+                    <div class="tab-content empty-state">
+                        <mat-icon class="large-icon">construction</mat-icon>
+                        <h3>Configuración de Tienda</h3>
+                        <p>Aquí podrás configurar el nombre, logo e impuestos de la tienda próximamente.</p>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>

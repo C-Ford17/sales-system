@@ -63,6 +63,21 @@ namespace SistemaVentas.API.Services
             };
         }
 
+        public async Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return false;
+
+            if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.PasswordHash))
+                return false;
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<ServiceResult<LoginResponse>> RefreshTokenAsync(string refreshToken)
         {
             return ServiceResult<LoginResponse>.Failure("No implementado");

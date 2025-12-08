@@ -15,6 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 
+import { AsyncPipe } from '@angular/common';
+
 @Component({
   selector: 'app-main-layout',
   standalone: true, // ← IMPORTANTE
@@ -42,12 +44,13 @@ export class MainLayoutComponent {
       shareReplay()
     );
 
-  currentUser: UserDto | null = null;
+  currentUser: any;
 
   constructor(private authService: AuthService, private router: Router) {
-    this.currentUser = this.authService.getCurrentUser();
-    // Obtener rol (asegúrate de que venga en el currentUser o decodifica el token)
-    this.userRole = this.currentUser?.roleName || '';
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user; // Se actualiza cada vez que cambie
+      this.userRole = user?.roleName || '';
+    });
   }
 
   // Helper para el HTML

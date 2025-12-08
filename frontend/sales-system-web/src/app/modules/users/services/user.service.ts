@@ -35,4 +35,7 @@ export class UserService {
     getRoles(): Observable<any[]> {
         return this.http.get<any[]>('http://localhost:5062/api/roles');
     }
+    updateProfile(data: any): Observable<any> {
+        return this.http.put(`${this.apiUrl}/profile`, data);
+    }
 }
