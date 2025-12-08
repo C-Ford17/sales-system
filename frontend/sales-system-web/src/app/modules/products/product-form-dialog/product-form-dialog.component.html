@@ -59,18 +59,24 @@
             </mat-form-field>
         </div>
 
-        <!-- Imagen URL (Temporal, luego haremos upload real) -->
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>URL de Imagen</mat-label>
-            <input matInput formControlName="imageUrl" placeholder="https://...">
-            <mat-icon matSuffix>image</mat-icon>
-        </mat-form-field>
+        <!-- ZONA DE CARGA DE IMAGEN (Estilo Referencia) -->
+        <div class="image-upload-container">
+            <label class="upload-label">Imagen del Producto</label>
 
-        <!-- Upload Placeholder (Visual) -->
-        <div class="upload-area">
-            <mat-icon class="upload-icon">cloud_upload</mat-icon>
-            <p>Click para subir o arrastra y suelta</p>
-            <span class="text-sm text-gray">SVG, PNG, JPG (MAX. 800x400px)</span>
+            <div class="upload-area" (click)="fileInput.click()">
+
+                <!-- Si hay imagen (preview o existente), mostrarla -->
+                <img *ngIf="imagePreview" [src]="imagePreview" class="preview-img">
+
+                <!-- Si no, mostrar placeholder -->
+                <div *ngIf="!imagePreview" class="placeholder-content">
+                    <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                    <p><strong>Click para subir</strong> o arrastra y suelta</p>
+                    <span class="subtext">SVG, PNG, JPG (MAX. 5MB)</span>
+                </div>
+
+                <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept="image/*">
+            </div>
         </div>
 
     </form>

@@ -35,6 +35,9 @@ export class SettingsComponent implements OnInit {
     private fb = inject(FormBuilder);
     private snackBar = inject(MatSnackBar);
 
+    selectedFile: File | null = null;
+    imagePreview: string | null = null;
+
     currentUser: any = null;
     isAdmin = false;
     hideCurrentPass = true;
@@ -56,6 +59,20 @@ export class SettingsComponent implements OnInit {
         });
     }
 
+    onFileSelected(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+            // Validación tamaño opcional aquí
+            this.selectedFile = file;
+
+            // Preview
+            const reader = new FileReader();
+            reader.onload = () => this.imagePreview = reader.result as string;
+            reader.readAsDataURL(file);
+            this.profileForm.markAsDirty();
+        }
+    }
+
     ngOnInit() {
         this.currentUser = this.authService.getCurrentUser();
         this.isAdmin = this.currentUser?.roleName === 'Admin';
@@ -72,13 +89,23 @@ export class SettingsComponent implements OnInit {
     updateProfile() {
         if (this.profileForm.invalid) return;
 
-        const { fullName, phone } = this.profileForm.value;
+        const formData = new FormData();
+        // Agregar campos de texto
+        formData.append('fullName', this.profileForm.get('fullName')?.value);
+        formData.append('phone', this.profileForm.get('phone')?.value);
 
-        this.userService.updateProfile({ fullName, phone }).subscribe({
-            next: () => {
-                this.currentUser.fullName = fullName;
-                this.currentUser.phone = phone;
-                this.authService.updateLocalUser({ fullName, phone });
+        // Agregar imagen si existe
+        if (this.selectedFile) {
+            formData.append('image', this.selectedFile);
+        }
+
+        this.userService.updateProfile(formData).subscribe({
+            next: (updatedUser) => {
+                this.authService.updateLocalUser({
+                    fullName: updatedUser.fullName,
+                    phone: updatedUser.phone,
+                    profileImageUrl: updatedUser.profileImageUrl // <--- Importante: Actualizar URL nueva
+                });
                 this.snackBar.open('Perfil actualizado', 'Cerrar', { duration: 3000 });
             },
             error: (err) => this.snackBar.open('Error al actualizar perfil', 'Cerrar')

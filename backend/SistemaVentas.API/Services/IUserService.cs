@@ -7,7 +7,7 @@ namespace SistemaVentas.API.Services
     {
         Task<List<UserDto>> GetAllUsersAsync();
         Task<User> CreateUserAsync(CreateUserDto dto);
-        Task<User> UpdateUserAsync(Guid id, UpdateUserDto dto);
+        Task<User> UpdateUserAsync(Guid id, UpdateUserDto dto, IFormFile? imageFile = null);
         Task DeleteUserAsync(Guid id);
     }
 }

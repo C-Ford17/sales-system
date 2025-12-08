@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace SistemaVentas.API.Models.DTOs.Products
 {
@@ -16,6 +17,7 @@ namespace SistemaVentas.API.Models.DTOs.Products
         public string SKU { get; set; }
         public string Status { get; set; }
         public string ImageUrl { get; set; }
+        public IFormFile? Image { get; set; } 
         public DateTime CreatedAt { get; set; }
         public bool IsLowStock => QuantityInStock < MinStock;
     }

@@ -104,6 +104,17 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<SistemaVentas.API.Services.ExcelService>();
 
+// Configurar Cloudinary Settings desde variables de entorno
+builder.Services.Configure<SistemaVentas.API.Helpers.CloudinarySettings>(options =>
+{
+    options.CloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME") ?? "";
+    options.ApiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY") ?? "";
+    options.ApiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET") ?? "";
+});
+
+// Registrar el servicio
+builder.Services.AddScoped<SistemaVentas.API.Services.CloudinaryService>();
+
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {

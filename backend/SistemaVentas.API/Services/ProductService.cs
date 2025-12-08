@@ -8,10 +8,11 @@ namespace SistemaVentas.API.Services
     public class ProductService : IProductService
     {
         private readonly ApplicationDbContext _context;
-
-        public ProductService(ApplicationDbContext context)
+        private readonly CloudinaryService _cloudinaryService;
+        public ProductService(ApplicationDbContext context, CloudinaryService cloudinaryService)
         {
             _context = context;
+            _cloudinaryService = cloudinaryService;
         }
 
         public async Task<List<ProductDto>> GetAllAsync(string? filterQuery = null, string? status = null)
@@ -62,12 +63,16 @@ namespace SistemaVentas.API.Services
                 MinStock = request.MinStock,
                 CategoryId = request.CategoryId,
                 SKU = request.SKU,
-                ImageUrl = request.ImageUrl,
                 Status = "active",
                 CreatedBy = userId,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
+
+            if (request.Image != null)
+            {
+                product.ImageUrl = await _cloudinaryService.UploadImageAsync(request.Image);
+            }
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -91,9 +96,11 @@ namespace SistemaVentas.API.Services
             product.CategoryId = request.CategoryId;
             product.SKU = request.SKU;
             product.Status = request.Status;
-            product.ImageUrl = request.ImageUrl;
             product.UpdatedAt = DateTime.UtcNow;
-
+            if (request.Image != null)
+            {
+                product.ImageUrl = await _cloudinaryService.UploadImageAsync(request.Image);
+            }
             await _context.SaveChangesAsync();
             return MapToDto(product);
         }

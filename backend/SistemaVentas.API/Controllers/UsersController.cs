@@ -58,7 +58,7 @@ namespace SistemaVentas.API.Controllers
         }
         [Authorize]
         [HttpPut("profile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
+        public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileDto dto)
         {
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim == null) return Unauthorized();
@@ -76,7 +76,7 @@ namespace SistemaVentas.API.Controllers
                 };
 
                 // 2. Llamar al servicio con el tipo correcto
-                var user = await _userService.UpdateUserAsync(userId, fullDto);
+                var user = await _userService.UpdateUserAsync(userId, fullDto, dto.Image);
                 return Ok(user);
 
             } catch (Exception ex) {

@@ -43,6 +43,7 @@ namespace SistemaVentas.API.Services
                 Phone = user.Phone ?? "",
                 RoleId = user.RoleId,
                 RoleName = user.Role?.Name ?? "",
+                ProfileImageUrl = user.ProfileImageUrl,
                 Status = user.Status,
                 CreatedAt = user.CreatedAt
             };

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace SistemaVentas.API.Models.DTOs.Products
 {
@@ -33,7 +34,7 @@ namespace SistemaVentas.API.Models.DTOs.Products
         public string SKU { get; set; }
 
         public string Status { get; set; } // "active", "inactive", etc.
-
-        public string ImageUrl { get; set; }
+        
+        public IFormFile? Image { get; set; }
     }
 }

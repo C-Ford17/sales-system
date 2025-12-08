@@ -34,7 +34,7 @@ namespace SistemaVentas.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateProductRequest request)
+        public async Task<IActionResult> Create([FromForm] CreateProductRequest request)
         {
             try 
             {
@@ -49,7 +49,7 @@ namespace SistemaVentas.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductRequest request)
+        public async Task<IActionResult> Update(Guid id, [FromForm] UpdateProductRequest request)
         {
             var updatedProduct = await _productService.UpdateAsync(id, request);
             if (updatedProduct == null) return NotFound();

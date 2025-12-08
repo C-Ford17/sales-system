@@ -15,7 +15,18 @@
                     <div class="tab-content">
                         <!-- Cabecera Perfil -->
                         <div class="profile-header">
-                            <div class="avatar-large">{{ getInitials() }}</div>
+                            <div class="avatar-wrapper" (click)="fileInput.click()">
+                                <!-- Lógica de visualización: Preview > URL Real > Default -->
+                                <img [src]="imagePreview || currentUser?.profileImageUrl || 'assets/default-avatar.png'"
+                                    class="avatar-large" style="object-fit: cover;">
+                                <!-- object-fit cover es vital para avatares -->
+
+                                <div class="avatar-overlay">
+                                    <mat-icon>camera_alt</mat-icon>
+                                </div>
+                            </div>
+                            <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept="image/*">
+
                             <div class="profile-info">
                                 <h2>{{ currentUser?.fullName }}</h2>
                                 <span class="role-badge">{{ currentUser?.roleName }}</span>

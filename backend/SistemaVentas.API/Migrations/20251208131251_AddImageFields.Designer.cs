@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SistemaVentas.API.Data;
@@ -12,9 +13,11 @@ using SistemaVentas.API.Data;
 namespace SistemaVentas.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251208131251_AddImageFields")]
+    partial class AddImageFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,6 +106,7 @@ namespace SistemaVentas.API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("MinStock")

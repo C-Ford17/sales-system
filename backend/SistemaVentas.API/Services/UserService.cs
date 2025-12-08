@@ -9,10 +9,11 @@ namespace SistemaVentas.API.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext _context;
-
-        public UserService(ApplicationDbContext context)
+        private readonly CloudinaryService _cloudinaryService;
+        public UserService(ApplicationDbContext context, CloudinaryService cloudinaryService)
         {
             _context = context;
+            _cloudinaryService = cloudinaryService;
         }
 
         public async Task<List<UserDto>> GetAllUsersAsync()
@@ -54,7 +55,7 @@ namespace SistemaVentas.API.Services
             return user;
         }
 
-        public async Task<User> UpdateUserAsync(Guid id, UpdateUserDto dto)
+        public async Task<User> UpdateUserAsync(Guid id, UpdateUserDto dto, IFormFile? imageFile = null)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) throw new Exception("Usuario no encontrado");
@@ -63,7 +64,10 @@ namespace SistemaVentas.API.Services
             if (dto.Status != null) user.Status = dto.Status;
             if (dto.Phone != null) user.Phone = dto.Phone;
             if (dto.RoleId.HasValue) user.RoleId = dto.RoleId.Value;
-
+            if (imageFile != null)
+            {
+                user.ProfileImageUrl = await _cloudinaryService.UploadImageAsync(imageFile);
+            }
             if (!string.IsNullOrEmpty(dto.Password))
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 

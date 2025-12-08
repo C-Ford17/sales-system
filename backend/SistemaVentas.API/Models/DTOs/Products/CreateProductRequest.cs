@@ -32,6 +32,6 @@ namespace SistemaVentas.API.Models.DTOs.Products
         [MaxLength(100)]
         public string SKU { get; set; }
 
-        public string ImageUrl { get; set; }
+        public IFormFile? Image { get; set; } 
     }
 }

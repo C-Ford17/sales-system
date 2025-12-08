@@ -10,6 +10,7 @@ namespace SistemaVentas.API.Models.Domain
         public string PasswordHash { get; set; }
         public string FullName { get; set; }
         public string Phone { get; set; }
+        public string? ProfileImageUrl { get; set; }
         public Guid RoleId { get; set; }
         public string Status { get; set; } = "active"; // active, inactive
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

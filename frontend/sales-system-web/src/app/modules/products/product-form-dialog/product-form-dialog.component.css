@@ -17,20 +17,50 @@
 }
 
 /* Upload Area (Estilo visual) */
+.image-upload-container {
+    margin-top: 8px;
+}
+
+.upload-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
 .upload-area {
     border: 2px dashed #E5E7EB;
     border-radius: 8px;
-    padding: 32px;
-    text-align: center;
+    height: 200px;
+    /* Altura fija importante */
     background-color: #F9FAFB;
     cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    /* Para apilar imagen o contenido verticalmente */
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+    overflow: hidden;
+    /* Evita que imagenes grandes rompan el borde */
+    position: relative;
 }
 
 .upload-area:hover {
-    border-color: #00E676;
-    background-color: #F0FDF4;
+    border-color: #10B981;
+    /* Verde esmeralda (coherente con el botón) */
+    background-color: #ECFDF5;
+}
+
+/* Contenedor interno del placeholder (texto e icono) */
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
 }
 
 .upload-icon {
@@ -41,12 +71,40 @@
     margin-bottom: 8px;
 }
 
-.text-gray {
+.upload-area p {
+    margin: 0;
+    color: #4B5563;
+    font-size: 0.95rem;
+}
+
+.subtext {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
     color: #9CA3AF;
+}
+
+/* Imagen Previa */
+.preview-img {
+    max-width: 100%;
+    max-height: 100%;
+    /* Se ajusta al alto del .upload-area (200px) */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    /* Mantiene proporciones sin cortar */
+    display: block;
 }
 
 /* Botones */
 mat-dialog-actions {
-    padding-bottom: 24px;
-    padding-right: 24px;
+    margin-bottom: 0;
+    /* Material Dialog ya maneja padding, a veces es mejor resetear márgenes */
+    padding-bottom: 8px;
+}
+
+.btn-primary {
+    background-color: #10B981 !important;
+    /* Verde coherente */
+    color: white !important;
 }

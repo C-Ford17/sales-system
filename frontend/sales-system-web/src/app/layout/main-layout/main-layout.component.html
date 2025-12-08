@@ -1,8 +1,14 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" autosize>
 
     <!-- SIDEBAR -->
-    <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <!-- 
+         opened: Controlado por lógica simple (cerrado en móvil al inicio, abierto en escritorio)
+         mode: 'over' en móvil, 'side' en escritorio
+         keydown.escape: Prevenimos cierre accidental con teclado
+    -->
+    <mat-sidenav #drawer class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false"
+        (keydown.escape)="$event.preventDefault()">
 
         <div class="logo-container">
             <div class="logo-icon">
@@ -13,37 +19,28 @@
 
         <div class="nav-container">
             <mat-nav-list>
-                <!-- DASHBOARD (Todos) -->
+                <!-- ... TUS LINKS DE SIEMPRE ... -->
                 <a mat-list-item routerLink="/panel/dashboard" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>dashboard</mat-icon>
                     <span matListItemTitle>Dashboard</span>
                 </a>
-
-                <!-- VENTAS (Todos) -->
                 <a mat-list-item routerLink="/panel/sales/pos" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>point_of_sale</mat-icon>
                     <span matListItemTitle>Nueva Venta</span>
                 </a>
-
-                <!-- HISTORIAL (Todos) -->
                 <a mat-list-item routerLink="/panel/sales/history" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>receipt_long</mat-icon>
                     <span matListItemTitle>Historial</span>
                 </a>
-
-                <!-- PRODUCTOS (Solo Admin y Supervisor) -->
                 <a mat-list-item routerLink="/panel/products" routerLinkActive="active-link"
                     *ngIf="hasRole(['Admin', 'Supervisor'])">
                     <mat-icon matListItemIcon>inventory_2</mat-icon>
                     <span matListItemTitle>Productos</span>
                 </a>
-
-                <!-- USUARIOS (Solo Admin) -->
                 <a mat-list-item routerLink="/panel/users" routerLinkActive="active-link" *ngIf="hasRole(['Admin'])">
                     <mat-icon matListItemIcon>group</mat-icon>
                     <span matListItemTitle>Usuarios</span>
                 </a>
-
             </mat-nav-list>
 
             <div class="nav-spacer"></div>
@@ -62,40 +59,48 @@
             <!-- Perfil Mini -->
             <div class="user-mini-profile">
                 <div class="avatar">
-                    <mat-icon>person</mat-icon>
+                    <!-- Reemplaza todo lo de adentro por esto: -->
+                    <img [src]="currentUser?.profileImageUrl || 
+                                    'https://ui-avatars.com/api/?name=' + (currentUser?.fullName || 'U') + '&background=random&color=fff&size=128'"
+                        alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                 </div>
+
                 <div class="user-info">
                     <p class="name">{{ currentUser?.fullName }}</p>
                     <p class="role">{{ currentUser?.roleName }}</p>
                 </div>
+
                 <button mat-icon-button (click)="logout()">
                     <mat-icon class="logout-icon">logout</mat-icon>
                 </button>
             </div>
+
         </div>
     </mat-sidenav>
 
     <!-- CONTENIDO -->
     <mat-sidenav-content>
-        <!-- Header simple sin color de fondo fuerte -->
         <mat-toolbar class="main-header">
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-                *ngIf="isHandset$ | async">
+
+            <!-- BOTÓN MENÚ: Visible SIEMPRE (quitamos el *ngIf) -->
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
 
-            <!-- Espacio para título dinámico si quisieras -->
             <span class="header-title"></span>
-
             <span class="spacer"></span>
 
-            <!-- Acciones Header -->
-            <button mat-icon-button class="header-icon">
+            <!-- ... ACCIONES HEADER (Notificaciones, Avatar, etc) ... -->
+            <!--<button mat-icon-button class="header-icon">
                 <mat-icon>notifications</mat-icon>
-            </button>
+            </button>-->
+            <!-- Avatar Header -->
             <div class="header-avatar">
-                <img src="https://ui-avatars.com/api/?name={{currentUser?.fullName}}&background=random" alt="Avatar">
+                <img [src]="currentUser?.profileImageUrl || 
+                        'https://ui-avatars.com/api/?name=' + (currentUser?.fullName || 'U') + '&background=random&color=fff&size=128'"
+                    alt="Avatar">
             </div>
+
         </mat-toolbar>
 
         <div class="content-wrapper">

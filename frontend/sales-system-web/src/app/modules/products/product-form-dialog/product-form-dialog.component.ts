@@ -32,6 +32,11 @@ export class ProductFormDialogComponent implements OnInit {
     isEditMode: boolean = false;
     categories: Category[] = [];
 
+    // --- NUEVO: Variables para manejo de imagen ---
+    selectedFile: File | null = null;
+    imagePreview: string | null = null;
+    // ----------------------------------------------
+
     constructor(
         private fb: FormBuilder,
         private productService: ProductService,
@@ -48,45 +53,78 @@ export class ProductFormDialogComponent implements OnInit {
             cost: [data?.cost || 0, [Validators.min(0)]],
             quantityInStock: [data?.quantityInStock || 0, [Validators.required, Validators.min(0)]],
             minStock: [data?.minStock || 5, [Validators.min(1)]],
-            imageUrl: [data?.imageUrl || ''],
+            // imageUrl: No lo necesitamos en el FormGroup porque lo manejamos separado
             status: [data?.status || 'active']
         });
+
+        // --- NUEVO: Cargar preview si ya existe imagen ---
+        if (data?.imageUrl) {
+            this.imagePreview = data.imageUrl;
+        }
     }
 
     ngOnInit(): void {
-        // CARGAR CATEGORÍAS REALES
         this.productService.getCategories().subscribe({
-            next: (cats) => {
-                this.categories = cats;
-                // Si estamos editando, asegurarnos que el valor seleccionado sea válido
-                if (this.isEditMode && this.data) {
-                    // A veces el valor ya está seteado por el formBuilder, 
-                    // pero al cargar la lista se refresca visualmente el select.
-                }
-            },
+            next: (cats) => this.categories = cats,
             error: (err) => console.error('Error cargando categorías', err)
         });
+    }
+
+    // --- NUEVO: Método para detectar selección de archivo ---
+    onFileSelected(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+            this.selectedFile = file;
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                alert('El archivo es demasiado grande. Máximo 5MB.');
+                // Limpiar input
+                event.target.value = '';
+                return;
+            }
+
+            // Crear preview local para mostrarla antes de subir
+            const reader = new FileReader();
+            reader.onload = () => {
+                this.imagePreview = reader.result as string;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     onSave(): void {
         if (this.productForm.invalid) return;
 
+        // --- NUEVO: Convertir a FormData para enviar archivo ---
+        const formData = new FormData();
         const formValue = this.productForm.value;
-        // Asegurar conversión de tipos
-        const productData = {
-            ...formValue,
-            price: Number(formValue.price),
-            cost: Number(formValue.cost),
-            quantityInStock: Number(formValue.quantityInStock),
-            minStock: Number(formValue.minStock)
-        };
+
+        // 1. Agregar campos de texto al FormData
+        formData.append('name', formValue.name);
+        formData.append('description', formValue.description);
+        formData.append('sku', formValue.sku);
+        formData.append('categoryId', formValue.categoryId);
+        formData.append('price', formValue.price.toString()); // Importante convertir a string
+        formData.append('cost', formValue.cost.toString());
+        formData.append('quantityInStock', formValue.quantityInStock.toString());
+        formData.append('minStock', formValue.minStock.toString());
+        formData.append('status', formValue.status);
+
+        // 2. Agregar archivo si existe selección nueva
+        if (this.selectedFile) {
+            formData.append('image', this.selectedFile);
+        }
+        // -----------------------------------------------------
+
         if (this.isEditMode && this.data) {
-            this.productService.updateProduct(this.data.id, productData).subscribe({
+            // Nota: Asegúrate de que tu servicio updateProduct acepte FormData
+            this.productService.updateProduct(this.data.id, formData).subscribe({
                 next: (updatedProduct) => this.dialogRef.close(updatedProduct),
                 error: (err) => console.error(err)
             });
         } else {
-            this.productService.createProduct(formValue).subscribe({
+            // Nota: Asegúrate de que tu servicio createProduct acepte FormData
+            this.productService.createProduct(formData).subscribe({
                 next: (newProduct) => this.dialogRef.close(newProduct),
                 error: (err) => console.error(err)
             });
