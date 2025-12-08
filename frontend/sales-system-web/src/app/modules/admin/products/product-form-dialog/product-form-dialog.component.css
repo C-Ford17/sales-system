@@ -1,0 +1,52 @@
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 8px;
+    min-width: 500px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* Upload Area (Estilo visual) */
+.upload-area {
+    border: 2px dashed #E5E7EB;
+    border-radius: 8px;
+    padding: 32px;
+    text-align: center;
+    background-color: #F9FAFB;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+}
+
+.upload-area:hover {
+    border-color: #00E676;
+    background-color: #F0FDF4;
+}
+
+.upload-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: #9CA3AF;
+    margin-bottom: 8px;
+}
+
+.text-gray {
+    color: #9CA3AF;
+}
+
+/* Botones */
+mat-dialog-actions {
+    padding-bottom: 24px;
+    padding-right: 24px;
+}

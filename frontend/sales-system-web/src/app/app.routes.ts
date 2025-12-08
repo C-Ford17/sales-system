@@ -3,7 +3,7 @@ import { AuthGuard } from './shared/guards/auth-guard'; // Asegúrate de que exi
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { DashboardComponent } from './modules/admin/dashboard/dashboard.component';
 import { LoginComponent } from './modules/auth/login/login.component';
-
+import { ProductListComponent } from './modules/admin/products/product-list/product-list.component';
 export const routes: Routes = [
     // Ruta por defecto redirige al login
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -23,6 +23,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard], // Protección
         children: [
             { path: 'dashboard', component: DashboardComponent },
+            { path: 'products', component: ProductListComponent },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     },

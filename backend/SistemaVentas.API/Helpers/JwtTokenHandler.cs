@@ -18,7 +18,8 @@ namespace SistemaVentas.API.Helpers
         public string GenerateToken(User user)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
-            var secretKey = jwtSettings["SecretKey"];
+            var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+                            ?? _configuration["Jwt:SecretKey"];
             var key = Encoding.ASCII.GetBytes(secretKey);
 
             var tokenHandler = new JwtSecurityTokenHandler();
