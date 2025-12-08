@@ -99,6 +99,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtTokenHandler>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
+
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {

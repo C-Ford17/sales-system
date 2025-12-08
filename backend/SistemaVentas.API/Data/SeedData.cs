@@ -130,6 +130,21 @@ namespace SistemaVentas.API.Data
                     context.Products.AddRange(products);
                     context.SaveChanges();
                 }
+                // 4. MÉTODOS DE PAGO (Si no existen, crearlos)
+                // ------------------------------------------------
+                if (!context.PaymentMethods.Any())
+                {
+                    var methods = new List<PaymentMethod>
+                    {
+                        // Solo Name, Description y CreatedAt
+                        new PaymentMethod { Name = "Efectivo", Description = "Pago en cash", CreatedAt = DateTime.UtcNow },
+                        new PaymentMethod { Name = "Tarjeta", Description = "Crédito o Débito", CreatedAt = DateTime.UtcNow },
+                        new PaymentMethod { Name = "Transferencia", Description = "Transferencia Bancaria", CreatedAt = DateTime.UtcNow }
+                    };
+                    
+                    context.PaymentMethods.AddRange(methods);
+                    context.SaveChanges();
+                }
             }
         }
     }

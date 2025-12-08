@@ -7,16 +7,15 @@ namespace SistemaVentas.API.Models.DTOs.Sales
     public class CreateSaleRequest
     {
         [Required]
-        public Guid PaymentMethodId { get; set; }
+        public string PaymentMethod { get; set; } // Cash, Card, etc.
 
-        public string Notes { get; set; }
+        public string CustomerName { get; set; } // Opcional
 
         [Required]
-        [MinLength(1)]
-        public List<SaleDetailRequest> Items { get; set; } = new();
+        public List<CreateSaleDetailDto> Details { get; set; } 
     }
 
-    public class SaleDetailRequest
+    public class CreateSaleDetailDto 
     {
         [Required]
         public Guid ProductId { get; set; }
@@ -24,8 +23,5 @@ namespace SistemaVentas.API.Models.DTOs.Sales
         [Required]
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
-
-        [Range(0, double.MaxValue)]
-        public decimal Discount { get; set; } = 0;
     }
 }
