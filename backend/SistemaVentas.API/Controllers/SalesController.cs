@@ -38,9 +38,26 @@ namespace SistemaVentas.API.Controllers
             [FromQuery] DateTime? start, 
             [FromQuery] DateTime? end)
         {
-            var sales = await _saleService.GetSalesAsync(number, start, end, null);
+            // 1. Obtener ID y Rol del usuario actual desde el Token
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var roleClaim = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+
+            Guid? filterUserId = null;
+
+            // 2. Si NO es Admin ni Supervisor, filtramos por su ID
+            if (roleClaim != "Admin" && roleClaim != "Supervisor")
+            {
+                if (Guid.TryParse(userIdClaim, out Guid uid))
+                {
+                    filterUserId = uid;
+                }
+            }
+
+            // 3. Pasamos el filterUserId al servicio
+            var sales = await _saleService.GetSalesAsync(number, start, end, filterUserId);
             return Ok(sales);
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSale(Guid id)

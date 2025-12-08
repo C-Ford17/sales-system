@@ -33,6 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class MainLayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
+  userRole: string = '';
 
   // Detectar si es móvil para colapsar menú
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -45,6 +46,13 @@ export class MainLayoutComponent {
 
   constructor(private authService: AuthService, private router: Router) {
     this.currentUser = this.authService.getCurrentUser();
+    // Obtener rol (asegúrate de que venga en el currentUser o decodifica el token)
+    this.userRole = this.currentUser?.roleName || '';
+  }
+
+  // Helper para el HTML
+  hasRole(allowedRoles: string[]): boolean {
+    return allowedRoles.includes(this.userRole);
   }
 
   logout(): void {

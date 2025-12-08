@@ -49,4 +49,8 @@ export class AuthService {
     isAuthenticated(): boolean {
         return !!this.getToken();
     }
+    getUserRole(): string {
+        return this.getCurrentUser()?.roleName || '';
+    }
+
 }
