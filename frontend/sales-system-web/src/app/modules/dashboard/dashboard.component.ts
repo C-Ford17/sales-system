@@ -12,6 +12,8 @@ import { AuthService } from '../../shared/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SaleDetailDialogComponent } from '../sales/sale-detail-dialog/sale-detail-dialog.component';
 import { RouterModule } from '@angular/router';
+import { ReportDialogComponent } from './report-dialog/report-dialog.component';
+import { ReportsService } from './services/report.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,6 +35,7 @@ export class DashboardComponent implements OnInit {
   private salesService = inject(SalesService);
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
+  private reportsService = inject(ReportsService);
   currentUser = this.authService.getCurrentUser();
   totalWeeklySales: number = 0;
   totalItemsSold: number = 0;
@@ -183,5 +186,33 @@ export class DashboardComponent implements OnInit {
       case 'cancelled': return 'badge-danger';
       default: return 'badge-gray';
     }
+  }
+
+  openReportDialog() {
+    const dialogRef = this.dialog.open(ReportDialogComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.downloadReport(result.start, result.end);
+      }
+    });
+  }
+
+  downloadReport(start: Date, end: Date) {
+    this.reportsService.downloadSalesExcel(start, end).subscribe({
+      next: (response) => {
+        // Crear enlace temporal para descargar el Blob
+        const blob = new Blob([response.body!], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Reporte_Ventas_${new Date().getTime()}.xlsx`; // Nombre por defecto
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => alert('Error al generar reporte (tal vez no hay datos en ese rango)')
+    });
   }
 }

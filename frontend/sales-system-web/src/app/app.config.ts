@@ -5,7 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor'; // Ajusta la ruta si es necesario
-
+import { provideNativeDateAdapter } from '@angular/material/core';
 // Función wrapper para el interceptor funcional (Angular 18+ prefiere fn interceptors)
 // Si tu AuthInterceptor es una clase, necesitamos un adaptador o convertirlo.
 // Por simplicidad, asumo que quieres usar la clase existente.
@@ -19,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideCharts(withDefaultRegisterables()),
     provideHttpClient(withInterceptorsFromDi()),
+    provideNativeDateAdapter(),
     // Registrar el interceptor basado en clase (Legacy support)
     {
       provide: HTTP_INTERCEPTORS,

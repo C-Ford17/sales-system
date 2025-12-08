@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SalesService, Sale } from '../services/sales.service';
 import { SaleDetailDialogComponent } from '../sale-detail-dialog/sale-detail-dialog.component';
@@ -26,7 +25,6 @@ import { SaleDetailDialogComponent } from '../sale-detail-dialog/sale-detail-dia
     MatInputModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     MatDialogModule
   ],
   templateUrl: './sales-list.component.html',

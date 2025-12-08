@@ -102,6 +102,8 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<SistemaVentas.API.Services.ExcelService>();
+
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
