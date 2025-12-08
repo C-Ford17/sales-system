@@ -6,30 +6,42 @@ using SistemaVentas.API.Helpers;
 using SistemaVentas.API.Services;
 using System.Text;
 
+// Custom .env loader
+var root = Directory.GetCurrentDirectory();
+var dotenv = Path.Combine(root, ".env");
+if (File.Exists(dotenv))
+{
+    foreach (var line in File.ReadAllLines(dotenv))
+    {
+        var parts = line.Split('=', 2);
+        if (parts.Length == 2)
+        {
+            Environment.SetEnvironmentVariable(parts[0], parts[1]);
+        }
+    }
+}
+
 var builder = WebApplicationBuilder.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
 
-// Database context
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// JWT Configuration
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["SecretKey"];
-var key = Encoding.ASCII.GetBytes(secretKey);
-// Al inicio de Program.cs, antes de builder.Build()
+// Env vars
 var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
 var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
 var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "sales_system";
 var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "postgres";
 var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "";
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") ?? "{JWT_SECRET_KEY}";
 
-var connectionString = $"Server={dbHost};Port={dbPort};Database={dbName};User Id={dbUser};Password={dbPassword};SSL Mode=Require;";
+var connectionString = $"Server={dbHost};Port={dbPort};Database={dbName};User Id={dbUser};Password={dbPassword};SSL Mode=Require;Channel Binding=require;";
 
+// Database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+// JWT Configuration
+var key = Encoding.ASCII.GetBytes(jwtSecret);
 
 
 builder.Services.AddAuthentication(options =>
