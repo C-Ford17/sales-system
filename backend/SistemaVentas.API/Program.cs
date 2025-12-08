@@ -100,7 +100,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtTokenHandler>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
-
+builder.Services.AddScoped<UserService>();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {

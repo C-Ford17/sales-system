@@ -6,6 +6,7 @@ import { LoginComponent } from './modules/auth/login/login.component';
 import { ProductListComponent } from './modules/admin/products/product-list/product-list.component';
 import { PosComponent } from './modules/admin/sales/pos/pos.component';
 import { SalesListComponent } from './modules/admin/sales/sales-list/sales-list.component';
+import { UserListComponent } from './modules/admin/users/user-list/user-list.component';
 
 export const routes: Routes = [
     // Ruta por defecto redirige al login
@@ -29,6 +30,7 @@ export const routes: Routes = [
             { path: 'products', component: ProductListComponent },
             { path: 'sales/pos', component: PosComponent },
             { path: 'sales/history', component: SalesListComponent },
+            { path: 'users', component: UserListComponent },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     },

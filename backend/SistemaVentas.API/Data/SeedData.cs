@@ -22,7 +22,12 @@ namespace SistemaVentas.API.Data
                     adminRole = new Role { Name = "Admin", Description = "Administrador", Permissions = emptyPermissions };
                     context.Roles.Add(adminRole);
                 }
-
+                var supervisorRole = context.Roles.FirstOrDefault(r => r.Name == "Supervisor");
+                if (supervisorRole == null)
+                {
+                    supervisorRole = new Role { Name = "Supervisor", Description = "Supervisor de tienda", Permissions = emptyPermissions };
+                    context.Roles.Add(supervisorRole);
+                }
                 var employeeRole = context.Roles.FirstOrDefault(r => r.Name == "Employee");
                 if (employeeRole == null)
                 {
