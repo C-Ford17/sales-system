@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaVentas.API.Models.Domain;
 
+
+
 namespace SistemaVentas.API.Data
 {
     public class ApplicationDbContext : DbContext

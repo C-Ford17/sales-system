@@ -1,0 +1,10 @@
+{
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist/sales-system-web",
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "https://sales-system-api-xxx.onrender.com/api/:path*"
+        }
+    ]
+}

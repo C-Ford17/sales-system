@@ -4,7 +4,6 @@ using SistemaVentas.API.Models.Domain;
 using SistemaVentas.API.Models.DTOs.Auth;
 using SistemaVentas.API.Models.DTOs.Users;
 using Microsoft.EntityFrameworkCore;
-using BC = BCrypt.Net.BCrypt;
 
 namespace SistemaVentas.API.Services
 {
@@ -27,7 +26,7 @@ namespace SistemaVentas.API.Services
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == email);
 
-            if (user == null || !BC.Verify(password, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))  // ← FIX 1
                 return ServiceResult<LoginResponse>.Failure("Email o contraseña inválidos");
 
             if (user.Status != "active")
@@ -41,9 +40,9 @@ namespace SistemaVentas.API.Services
                 Id = user.Id,
                 Email = user.Email,
                 FullName = user.FullName,
-                Phone = user.Phone,
+                Phone = user.Phone ?? "",
                 RoleId = user.RoleId,
-                RoleName = user.Role.Name,
+                RoleName = user.Role?.Name ?? "",
                 Status = user.Status,
                 CreatedAt = user.CreatedAt
             };
@@ -55,12 +54,17 @@ namespace SistemaVentas.API.Services
                 User = userDto
             };
 
-            return ServiceResult<LoginResponse>.Success(response);
+            // ← FIX 2: Crear instancia directa
+            return new ServiceResult<LoginResponse>
+            {
+                Success = true,
+                Data = response,
+                Message = "Login exitoso"
+            };
         }
 
         public async Task<ServiceResult<LoginResponse>> RefreshTokenAsync(string refreshToken)
         {
-            // Implement refresh token logic
             return ServiceResult<LoginResponse>.Failure("No implementado");
         }
     }
