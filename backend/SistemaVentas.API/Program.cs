@@ -134,11 +134,11 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Ocurrió un error al sembrar la base de datos.");
     }
 }
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment()) <--- BORRAR ESTA LÍNEA
+//{
+app.UseSwagger();
+app.UseSwaggerUI();
+//}
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAngular");

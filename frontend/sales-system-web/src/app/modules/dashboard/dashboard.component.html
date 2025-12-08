@@ -23,7 +23,7 @@
 <div class="stats-grid">
     <mat-card *ngFor="let stat of stats" class="p-4">
         <div class="stat-content">
-            <p class="text-gray">{{ salesPeriodLabel }}</p>
+            <p class="text-gray">{{ stat.title }}</p>
             <h2 class="text-2xl font-bold">{{ stat.value }}</h2>
             <span [class]="stat.isPositive ? 'text-green' : 'text-red'">
                 {{ stat.change }}
