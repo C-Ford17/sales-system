@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "node scripts/set-env.js && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -40,6 +41,7 @@
     "@angular/cli": "^20.1.5",
     "@angular/compiler-cli": "^20.1.0",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^24.10.1",
     "@types/xlsx": "^0.0.35",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
