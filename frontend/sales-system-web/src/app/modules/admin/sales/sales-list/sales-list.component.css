@@ -1,0 +1,106 @@
+.page-container {
+    padding: 0;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0;
+    color: #111827;
+}
+
+.content-card {
+    padding: 0 !important;
+    border-radius: 12px;
+    overflow: hidden;
+    border: none !important;
+}
+
+/* Filtros */
+.filters-row {
+    display: flex;
+    gap: 16px;
+    padding: 24px;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    align-items: center;
+}
+
+.search-field {
+    flex: 1;
+    max-width: 300px;
+}
+
+.date-field {
+    flex: 1;
+    max-width: 300px;
+}
+
+/* Tabla */
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+}
+
+th.mat-header-cell {
+    background-color: #f9fafb;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 16px 24px;
+}
+
+td.mat-cell {
+    padding: 16px 24px;
+    color: #374151;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.hover-row:hover {
+    background-color: #f9fafb;
+}
+
+/* Badges y Textos */
+.font-medium {
+    font-weight: 600;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.text-lg {
+    font-size: 1rem;
+}
+
+.text-gray {
+    color: #6b7280;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-gray {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+/* Form Field Overrides para que sean más compactos */
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}

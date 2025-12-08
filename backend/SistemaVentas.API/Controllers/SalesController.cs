@@ -32,5 +32,28 @@ namespace SistemaVentas.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetSales(
+            [FromQuery] string? number, 
+            [FromQuery] DateTime? start, 
+            [FromQuery] DateTime? end)
+        {
+            var sales = await _saleService.GetSalesAsync(number, start, end, null);
+            return Ok(sales);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSale(Guid id)
+        {
+            try 
+            {
+                var sale = await _saleService.GetSaleByIdAsync(id);
+                return Ok(sale);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

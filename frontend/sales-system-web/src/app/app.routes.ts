@@ -5,6 +5,8 @@ import { DashboardComponent } from './modules/admin/dashboard/dashboard.componen
 import { LoginComponent } from './modules/auth/login/login.component';
 import { ProductListComponent } from './modules/admin/products/product-list/product-list.component';
 import { PosComponent } from './modules/admin/sales/pos/pos.component';
+import { SalesListComponent } from './modules/admin/sales/sales-list/sales-list.component';
+
 export const routes: Routes = [
     // Ruta por defecto redirige al login
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -25,7 +27,8 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', component: DashboardComponent },
             { path: 'products', component: ProductListComponent },
-            { path: 'sales', component: PosComponent },
+            { path: 'sales/pos', component: PosComponent },
+            { path: 'sales/history', component: SalesListComponent },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     },

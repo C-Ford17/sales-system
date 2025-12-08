@@ -17,10 +17,19 @@
                     <mat-icon matListItemIcon>dashboard</mat-icon>
                     <span matListItemTitle>Dashboard</span>
                 </a>
-                <a mat-list-item routerLink="/admin/sales" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>receipt_long</mat-icon>
-                    <span matListItemTitle>Ventas</span>
+                <!-- NUEVA VENTA (POS) -->
+                <a mat-list-item routerLink="/admin/sales/pos" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>point_of_sale</mat-icon>
+                    <span matListItemTitle>Nueva Venta</span>
                 </a>
+
+                <!-- HISTORIAL VENTAS -->
+                <a mat-list-item routerLink="/admin/sales/history" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>receipt_long</mat-icon>
+                    <span matListItemTitle>Historial</span>
+                </a>
+
+                <!-- ... Productos ... -->
                 <a mat-list-item routerLink="/admin/products" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>inventory_2</mat-icon>
                     <span matListItemTitle>Productos</span>

@@ -84,6 +84,69 @@ namespace SistemaVentas.API.Services
                 throw;
             }
         }
+        public async Task<List<SaleDto>> GetSalesAsync(string? filterNumber, DateTime? startDate, DateTime? endDate, Guid? userId = null)
+        {
+            var query = _context.Sales
+                .Include(s => s.User)
+                .Include(s => s.PaymentMethod)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterNumber))
+                query = query.Where(s => s.SaleNumber.Contains(filterNumber));
+
+            if (startDate.HasValue)
+                query = query.Where(s => s.CreatedAt >= startDate.Value.ToUniversalTime());
+
+            if (endDate.HasValue)
+                query = query.Where(s => s.CreatedAt <= endDate.Value.ToUniversalTime().AddDays(1)); // Incluir todo el día final
+
+            if (userId.HasValue)
+                query = query.Where(s => s.UserId == userId.Value);
+
+            var sales = await query.OrderByDescending(s => s.CreatedAt).ToListAsync();
+
+            return sales.Select(s => new SaleDto
+            {
+                Id = s.Id,
+                SaleNumber = s.SaleNumber,
+                UserName = s.User?.FullName ?? "Desconocido",
+                TotalAmount = s.TotalAmount,
+                PaymentMethodName = s.PaymentMethod?.Name ?? "N/A",
+                Status = s.Status,
+                CreatedAt = s.CreatedAt
+            }).ToList();
+        }
+
+        public async Task<SaleDto> GetSaleByIdAsync(Guid id)
+        {
+            var sale = await _context.Sales
+                .Include(s => s.User)
+                .Include(s => s.PaymentMethod)
+                .Include(s => s.Details)
+                    .ThenInclude(d => d.Product)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (sale == null) throw new Exception("Venta no encontrada");
+
+            return new SaleDto
+            {
+                Id = sale.Id,
+                SaleNumber = sale.SaleNumber,
+                UserName = sale.User?.FullName,
+                TotalAmount = sale.TotalAmount,
+                PaymentMethodName = sale.PaymentMethod?.Name,
+                Status = sale.Status,
+                CreatedAt = sale.CreatedAt,
+                Notes = sale.Notes,
+                Details = sale.Details.Select(d => new SaleDetailDto
+                {
+                    ProductName = d.Product?.Name ?? "Producto eliminado",
+                    Quantity = d.Quantity,
+                    UnitPrice = d.UnitPrice,
+                    Subtotal = d.Subtotal
+                }).ToList()
+            };
+        }
 
         private string GenerateSaleNumber()
         {
