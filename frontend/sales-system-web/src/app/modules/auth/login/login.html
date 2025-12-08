@@ -1,0 +1,29 @@
+<div class="login-container">
+    <mat-card>
+        <mat-card-title>Iniciar sesión</mat-card-title>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" />
+                <mat-error *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                    Email inválido
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Contraseña</mat-label>
+                <input matInput formControlName="password" type="password" />
+                <mat-error *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                    Mínimo 6 caracteres
+                </mat-error>
+            </mat-form-field>
+
+            <div *ngIf="error" class="error">{{ error }}</div>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">
+                {{ loading ? 'Ingresando...' : 'Ingresar' }}
+            </button>
+        </form>
+    </mat-card>
+</div>
