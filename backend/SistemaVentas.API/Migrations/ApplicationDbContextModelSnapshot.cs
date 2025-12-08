@@ -103,7 +103,6 @@ namespace SistemaVentas.API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("MinStock")
@@ -314,6 +313,9 @@ namespace SistemaVentas.API.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfileImageUrl")
                         .HasColumnType("text");
 
                     b.Property<Guid>("RoleId")

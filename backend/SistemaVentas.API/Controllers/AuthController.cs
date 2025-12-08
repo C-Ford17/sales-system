@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaVentas.API.Models.DTOs.Auth;
 using SistemaVentas.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SistemaVentas.API.Controllers
 {
@@ -43,5 +44,26 @@ namespace SistemaVentas.API.Controllers
 
             return Ok(result.Data);
         }
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null) return Unauthorized();
+
+            var userId = Guid.Parse(userIdClaim);
+
+            // Llamamos al servicio en vez de usar _context directamente
+            var result = await _authService.ChangePasswordAsync(userId, dto.CurrentPassword, dto.NewPassword);
+
+            if (!result)
+            {
+                return BadRequest("La contraseña actual es incorrecta o el usuario no existe.");
+            }
+
+            return Ok(new { message = "Contraseña actualizada correctamente." });
+        }
+
+
     }
 }

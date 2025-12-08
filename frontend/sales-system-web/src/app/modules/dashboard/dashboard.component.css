@@ -1,0 +1,277 @@
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.header-text h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.header-text p {
+    color: var(--text-gray);
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Grid Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.text-gray {
+    color: #6B7280;
+    font-size: 0.95rem;
+    /* Un pelín más grande */
+    font-weight: 500;
+    /* Semi-bold */
+    margin-bottom: 12px;
+    /* Más espacio antes del número */
+}
+
+.text-2xl {
+    font-size: 2.25rem !important;
+    /* Números más grandes e impactantes */
+    letter-spacing: -1px;
+    /* Estilo moderno "tight" */
+    color: #111827;
+}
+
+
+.text-green {
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.text-red {
+    color: var(--danger-text);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Charts */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+.stat-content {
+    padding-left: 8px;
+    /* Un poco de aire a la izquierda */
+}
+
+.chart-card {
+    padding: 24px 32px;
+    height: 400px;
+    /* Altura fija para la tarjeta */
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    /* CRÍTICO para que no se desborde en flexbox */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* Evita scrollbars accidentales */
+}
+
+
+.big-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+/* Center Text for Doughnut */
+.relative-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-text {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    /* Dejar pasar clicks al gráfico */
+}
+
+.center-text h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.center-text p {
+    margin: 0;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+}
+
+/* Table */
+.section-title {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.table-card {
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 16px 24px;
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+    background: #FAFAFA;
+}
+
+td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.font-bold {
+    font-weight: 600;
+}
+
+.table-footer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.pagination {
+    display: flex;
+    gap: 8px;
+}
+
+/* Botón Verde Neón */
+.btn-primary {
+    background-color: #00E676 !important;
+    /* Verde neón exacto */
+    color: #000000 !important;
+    /* Texto negro para contraste */
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    padding: 0 24px !important;
+    height: 42px !important;
+    /* Un poco más alto */
+    border: none !important;
+    box-shadow: 0 4px 6px rgba(0, 230, 118, 0.2);
+    /* Sombra suave verde */
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+
+    /* Flexbox para centrar si usas mat-icon dentro después */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    background-color: #00C853 !important;
+    /* Un poco más oscuro al pasar mouse */
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px rgba(0, 230, 118, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.date-btn {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+    /* Gris muy suave */
+    color: #374151 !important;
+    /* Gris oscuro texto */
+    border-radius: 8px !important;
+    height: 42px !important;
+    font-weight: 500 !important;
+}
+
+.date-btn mat-icon {
+    color: #9CA3AF;
+    /* Icono gris más claro */
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.badge-warning {
+    background-color: #fef9c3;
+    color: #854d0e;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.badge-gray {
+    background-color: #f3f4f6;
+    color: #374151;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 1000px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .chart-card {
+        height: 400px;
+    }
+}

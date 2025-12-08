@@ -1,29 +1,71 @@
-<div class="login-container">
-    <mat-card>
-        <mat-card-title>Iniciar sesión</mat-card-title>
+<div class="login-page">
+    <!-- Logo y Título Global -->
+    <div class="brand-header">
+        <div class="logo-icon">
+            <!-- Icono SVG o MatIcon simulando el logo -->
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z"
+                    fill="#0F4C81" />
+                <path d="M20 10l-8 14h16l-8-14z" fill="#0F4C81" />
+            </svg>
+        </div>
+        <h1 class="brand-name">Sales Management System</h1>
+    </div>
 
-        <form [formGroup]="form" (ngSubmit)="submit()">
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="email" type="email" />
-                <mat-error *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+    <!-- Tarjeta Login -->
+    <mat-card class="login-card">
+        <div class="card-header">
+            <h2>Bienvenido de nuevo</h2>
+            <p class="subtitle">Ingresa tus credenciales para acceder a la plataforma.</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="submit()">
+
+            <!-- Email -->
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <mat-form-field appearance="outline" class="custom-field">
+                    <mat-icon matPrefix>email</mat-icon>
+                    <input matInput formControlName="email" placeholder="correo@ejemplo.com" type="email">
+                </mat-form-field>
+                <mat-error *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
                     Email inválido
                 </mat-error>
-            </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Contraseña</mat-label>
-                <input matInput formControlName="password" type="password" />
-                <mat-error *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-                    Mínimo 6 caracteres
-                </mat-error>
-            </mat-form-field>
+            <!-- Password -->
+            <div class="form-group">
+                <label>Contraseña</label>
+                <mat-form-field appearance="outline" class="custom-field">
+                    <mat-icon matPrefix>lock</mat-icon>
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                        placeholder="Contraseña">
+                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
 
-            <div *ngIf="error" class="error">{{ error }}</div>
+            <div class="forgot-password">
+                <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">
+            <!-- Botón -->
+            <button mat-flat-button color="primary" class="btn-submit" [disabled]="loginForm.invalid || loading">
                 {{ loading ? 'Ingresando...' : 'Ingresar' }}
             </button>
+
+            <!-- Mensaje Error -->
+            <div *ngIf="errorMessage" class="error-banner">
+                <mat-icon>error_outline</mat-icon>
+                <span>{{ errorMessage }}</span>
+            </div>
+
         </form>
     </mat-card>
+
+    <div class="footer-copyright">
+        © 2024 Sales Corp. Todos los derechos reservados.
+    </div>
 </div>

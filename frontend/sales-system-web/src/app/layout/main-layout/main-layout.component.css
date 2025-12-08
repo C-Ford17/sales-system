@@ -1,0 +1,176 @@
+.sidenav {
+    width: 250px;
+    /* Ligeramente más angosto */
+    background: var(--white);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Evitar scroll horizontal y mejorar vertical */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Scrollbar más sutil */
+.sidenav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidenav::-webkit-scrollbar-thumb {
+    background-color: #E5E7EB;
+    border-radius: 4px;
+}
+
+.logo-container {
+    height: 64px;
+    /* Reducido de 80px a 64px */
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    /* Ajustado */
+    gap: 12px;
+    flex-shrink: 0;
+    /* Evita que se encoja */
+}
+
+.logo-icon {
+    width: 28px;
+    /* Ligeramente más pequeño */
+    height: 28px;
+    background: var(--primary-color);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.1rem;
+    /* Ajustado */
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* Ocupar el resto del espacio */
+    padding: 0 12px;
+    /* Padding lateral global para el menú */
+}
+
+.nav-spacer {
+    flex: 1;
+}
+
+/* Estilos de Links Compactos */
+mat-nav-list a {
+    margin: 2px 0 !important;
+    /* Reducido margen vertical */
+    padding: 0 12px;
+    /* Padding interno */
+    border-radius: 6px;
+    color: var(--text-gray);
+    height: 40px !important;
+    /* Altura fija más compacta */
+    display: flex;
+    align-items: center;
+}
+
+/* Ajuste iconos dentro del link */
+mat-nav-list a mat-icon {
+    margin-right: 12px;
+    font-size: 20px;
+    /* Iconos un poco más pequeños */
+    width: 20px;
+    height: 20px;
+}
+
+mat-nav-list a.active-link {
+    background-color: #E6FFFA;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+mat-nav-list a.active-link mat-icon {
+    color: var(--primary-color);
+}
+
+/* Perfil inferior sidebar */
+.user-mini-profile {
+    margin: 12px 0;
+    /* Ajustado margen */
+    padding: 8px 12px;
+    background: var(--bg-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    /* Evitar que se aplaste */
+}
+
+.user-mini-profile .avatar {
+    width: 32px;
+    height: 32px;
+    background: #E5E7EB;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.user-info .name {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-info .role {
+    margin: 0;
+    font-size: 0.7rem;
+    color: var(--text-gray);
+}
+
+.logout-icon {
+    font-size: 1.1rem;
+    color: var(--text-gray);
+}
+
+/* Header Principal */
+.main-header {
+    background: transparent;
+    padding: 0 24px;
+    /* Ajustado */
+    height: 64px;
+    /* Coherente con logo-container */
+}
+
+.header-icon {
+    color: var(--text-gray);
+}
+
+.header-avatar img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.content-wrapper {
+    padding: 24px 32px !important;
+    max-width: 1600px;
+    margin: 0 auto;
+}

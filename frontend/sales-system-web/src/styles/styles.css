@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Paleta del Diseño */
+    --primary-color: #00E676;
+    /* Verde vibrante */
+    --primary-dark: #00C853;
+    --bg-color: #F4F6F8;
+    /* Fondo gris muy suave */
+    --text-dark: #111827;
+    /* Casi negro */
+    --text-gray: #6B7280;
+    /* Gris texto */
+    --white: #ffffff;
+    --border-color: #E5E7EB;
+
+    /* Estados */
+    --success-bg: #DCFCE7;
+    --success-text: #166534;
+    --warning-bg: #FEF9C3;
+    --warning-text: #854D0E;
+    --danger-bg: #FEE2E2;
+    --danger-text: #991B1B;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    color: var(--text-dark);
+}
+
+/* Overrides de Material para que se vea como el diseño */
+.mat-mdc-card {
+    background: var(--white);
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Botón Primario Verde */
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    color: #000 !important;
+    /* Texto negro para contraste en verde neón */
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    padding: 0 20px !important;
+    height: 40px !important;
+    border: none;
+}
+
+/* Badges de estado */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.badge-warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.badge-danger {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}

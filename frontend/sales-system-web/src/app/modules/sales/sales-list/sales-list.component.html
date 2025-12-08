@@ -1,0 +1,106 @@
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Historial de Ventas</h1>
+        <!-- Opcional: Botón Exportar -->
+        <!-- <button mat-stroked-button> <mat-icon>download</mat-icon> Exportar </button> -->
+    </div>
+
+    <mat-card class="content-card">
+
+        <!-- Filtros -->
+        <div class="filters-row">
+            <!-- Buscador -->
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Buscar por # Venta</mat-label>
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput [(ngModel)]="filterNumber" (keyup.enter)="loadSales()" placeholder="Ej. VEN-2025...">
+            </mat-form-field>
+
+            <!-- Fechas -->
+            <mat-form-field appearance="outline" class="date-field">
+                <mat-label>Rango de Fechas</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Inicio" [(ngModel)]="startDate">
+                    <input matEndDate placeholder="Fin" [(ngModel)]="endDate" (dateChange)="loadSales()">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+
+            <!-- Botón Limpiar (Solo visible si hay filtros) -->
+            <button mat-icon-button color="warn" (click)="clearFilters()" *ngIf="filterNumber || startDate || endDate"
+                matTooltip="Limpiar Filtros">
+                <mat-icon>close</mat-icon>
+            </button>
+
+            <!-- Botón Refrescar (Siempre visible) -->
+            <button mat-icon-button color="primary" (click)="loadSales()" matTooltip="Refrescar">
+                <mat-icon>refresh</mat-icon>
+            </button>
+
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-responsive">
+            <table mat-table [dataSource]="sales">
+
+                <!-- # Venta -->
+                <ng-container matColumnDef="number">
+                    <th mat-header-cell *matHeaderCellDef> # Recibo </th>
+                    <td mat-cell *matCellDef="let sale" class="font-medium"> {{ sale.saleNumber }} </td>
+                </ng-container>
+
+                <!-- Fecha -->
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                    <td mat-cell *matCellDef="let sale" class="text-gray">
+                        {{ sale.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                    </td>
+                </ng-container>
+
+                <!-- Vendedor -->
+                <ng-container matColumnDef="user">
+                    <th mat-header-cell *matHeaderCellDef> Vendedor </th>
+                    <td mat-cell *matCellDef="let sale"> {{ sale.userName }} </td>
+                </ng-container>
+
+                <!-- Pago -->
+                <ng-container matColumnDef="payment">
+                    <th mat-header-cell *matHeaderCellDef> Método </th>
+                    <td mat-cell *matCellDef="let sale">
+                        <span class="badge badge-gray">{{ sale.paymentMethodName }}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Total -->
+                <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                    <td mat-cell *matCellDef="let sale" class="font-bold text-lg">
+                        ${{ sale.totalAmount | number:'1.2-2' }}
+                    </td>
+                </ng-container>
+
+                <!-- Acciones -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let sale">
+                        <button mat-icon-button color="primary" (click)="viewDetails(sale)" matTooltip="Ver Detalle">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row"></tr>
+
+                <!-- Empty State -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell p-8 text-center text-gray" [attr.colspan]="displayedColumns.length">
+                        No se encontraron ventas con los filtros seleccionados.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </mat-card>
+</div>

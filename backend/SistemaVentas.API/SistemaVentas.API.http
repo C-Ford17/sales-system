@@ -1,6 +1,9 @@
+# Este archivo es solo para testing local en desarrollo
+# Cambia el puerto si tu API corre en otro puerto
 @SistemaVentas.API_HostAddress = http://localhost:5062
 
 GET {{SistemaVentas.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+

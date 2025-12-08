@@ -15,7 +15,7 @@ namespace SistemaVentas.API.Models.Domain
         public Guid CategoryId { get; set; }
         public string SKU { get; set; }
         public string Status { get; set; } = "active"; // active, inactive, discontinued
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public Guid CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
