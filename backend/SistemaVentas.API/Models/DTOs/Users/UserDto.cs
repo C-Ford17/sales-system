@@ -1,4 +1,3 @@
-# Binaries for programs and plugins
 using System;
 
 namespace SistemaVentas.API.Models.DTOs.Users

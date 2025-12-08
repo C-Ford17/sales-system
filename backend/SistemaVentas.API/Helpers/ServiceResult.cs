@@ -1,13 +1,15 @@
+using System.Collections.Generic;
+
 namespace SistemaVentas.API.Helpers
 {
     public class ServiceResult<T>
     {
         public bool Success { get; set; }
-        public string Message { get; set; }
-        public T Data { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public T? Data { get; set; }
         public List<string> Errors { get; set; } = new();
 
-        public static ServiceResult<T> Success(T data, string message = "Operación exitosa")
+        public static ServiceResult<T> CreateSuccess(T data, string message = "Operación exitosa")
         {
             return new ServiceResult<T>
             {

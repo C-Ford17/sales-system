@@ -43,7 +43,7 @@ namespace SistemaVentas.API.Helpers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte;
+            var randomNumber = new byte[64];
             using (var rng = System.Security.Cryptography.RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
