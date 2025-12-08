@@ -132,33 +132,44 @@ export class DashboardComponent implements OnInit {
   loadDashboardStats(days: number = 7) {
     this.dashboardService.getStats(days).subscribe({
       next: (data) => {
+        // Guardar datos raw (por si los necesitas)
         this.totalWeeklySales = data.weeklyIncome;
         this.incomeChange = data.incomeChangePercentage;
         this.salesChange = data.salesChangePercentage;
-        // 1. Actualizar Tarjetas
-        this.stats[0].change = (this.incomeChange > 0 ? '+' : '') + this.incomeChange + '%';
-        this.stats[0].isPositive = this.incomeChange >= 0;
-        this.stats[1].change = (this.salesChange > 0 ? '+' : '') + this.salesChange + '%';
-        this.stats[1].isPositive = this.salesChange >= 0;
-        this.stats[0].value = `$${data.weeklyIncome.toLocaleString()}`; // Ingresos
-        this.stats[1].value = data.weeklySalesCount.toString();         // Cantidad Ventas
-        this.stats[2].value = data.activeProducts.toString();           // Productos
-        this.stats[3].value = data.activeUsers.toString();              // Usuarios
 
-        // 2. Actualizar Gráfico Líneas
+        // --- CORRECCIÓN CLAVE: ACTUALIZAR EL ARRAY STATS ---
+        // Nota: Angular detecta cambios en objetos, pero es mejor reasignar valores si usas OnPush
+        // O simplemente actualizar las propiedades del objeto existente:
+
+        // 1. Tarjeta INGRESOS (Índice 0)
+        this.stats[0].value = `$${data.weeklyIncome.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+        this.stats[0].change = (data.incomeChangePercentage > 0 ? '+' : '') + data.incomeChangePercentage + '%';
+        this.stats[0].isPositive = data.incomeChangePercentage >= 0;
+        this.stats[0].title = `Ingresos (${days} días)`;
+        // 2. Tarjeta VENTAS (Índice 1)
+        this.stats[1].value = data.weeklySalesCount.toString();
+        this.stats[1].change = (data.salesChangePercentage > 0 ? '+' : '') + data.salesChangePercentage + '%';
+        this.stats[1].isPositive = data.salesChangePercentage >= 0;
+        this.stats[1].title = `Ventas (${days} días)`;
+
+        // 3. Tarjeta PRODUCTOS (Índice 2)
+        this.stats[2].value = data.activeProducts.toString();
+
+        // 4. Tarjeta USUARIOS (Índice 3)
+        this.stats[3].value = data.activeUsers.toString();
+
+
+        // --- Actualizar Gráficos ---
+        // Line Chart
         this.lineChartData.labels = data.daysLabels;
         this.lineChartData.datasets[0].data = data.dailySales;
+        this.lineChartData = { ...this.lineChartData }; // Forzar repintado
 
-        // Forzar actualización del gráfico (importante en ng2-charts)
-        this.lineChartData = { ...this.lineChartData };
-
-        // 3. Actualizar Gráfico Dona
+        // Doughnut Chart
         this.doughnutChartData.labels = data.salesByCategory.map(c => c.categoryName);
         this.doughnutChartData.datasets[0].data = data.salesByCategory.map(c => c.salesCount);
         this.totalItemsSold = data.salesByCategory.reduce((acc, curr) => acc + curr.salesCount, 0);
-        this.doughnutChartData = { ...this.doughnutChartData };
-
-
+        this.doughnutChartData = { ...this.doughnutChartData }; // Forzar repintado
       },
       error: (err) => console.error('Error dashboard stats', err)
     });

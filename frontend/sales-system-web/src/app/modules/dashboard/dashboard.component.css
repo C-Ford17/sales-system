@@ -66,6 +66,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 24px;
+    align-items: stretch;
 }
 
 .stat-content {
@@ -79,6 +80,7 @@
     /* Altura fija para la tarjeta */
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .chart-container {
@@ -90,6 +92,9 @@
     height: 100%;
     overflow: hidden;
     /* Evita scrollbars accidentales */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -105,6 +110,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-height: 280px !important;
+    /* Limitar altura máxima visual */
+    max-width: 100% !important;
 }
 
 .center-text {
