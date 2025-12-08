@@ -46,4 +46,8 @@ packages/
 [Oo]bj/
 **/bin/
 **/obj/
-*md
+
+# Documentation (local only)
+*.md
+!README.md
+
