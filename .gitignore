@@ -1,0 +1,47 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+
+# VS Code
+.vscode/
+
+# Node / Angular (Frontend)
+node_modules/
+dist/
+.angular/
+coverage/
+npm-debug.log
+yarn-error.log
+*.tmp
+*.bak
+*.swp
+/frontend/sales-system-web/.editorconfig
+
+# Environments
+.env
+.env.local
+.env.*.local
+
+# .NET / Visual Studio (Backend)
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+packages/
+*_i.c
+*_p.c
+*.ncb
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+[Bb]in/
+[Oo]bj/
+**/bin/
+**/obj/
