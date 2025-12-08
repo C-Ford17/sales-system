@@ -11,7 +11,7 @@ export const environment = {
 };
 `;
 
-const envFilePath = './src/environments/environment.prod.ts';
+const envFilePath = './src/environments/environment.ts';
 
 try {
     fs.writeFileSync(envFilePath, envContent);
