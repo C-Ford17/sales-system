@@ -12,9 +12,9 @@ export interface Category {
     providedIn: 'root'
 })
 export class ProductService {
-    // Si no tienes environment configurado, usa 'http://localhost:5062/api/products'
-    private apiUrl = 'http://localhost:5062/api/products';
-    private categoriesUrl = 'http://localhost:5062/api/categories';
+
+    private apiUrl = `${environment.apiUrl}/products`;
+    private categoriesUrl = `${environment.apiUrl}/categories`;
 
     constructor(private http: HttpClient) { }
 

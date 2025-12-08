@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 export interface DashboardStats {
     weeklyIncome: number;
@@ -20,7 +21,7 @@ export interface DashboardStats {
 })
 export class DashboardService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:5062/api/dashboard'; // Ajusta tu puerto
+    private apiUrl = `${environment.apiUrl}/dashboard`;
 
     getStats(days: number = 7): Observable<DashboardStats> {
         return this.http.get<DashboardStats>(`${this.apiUrl}?days=${days}`);

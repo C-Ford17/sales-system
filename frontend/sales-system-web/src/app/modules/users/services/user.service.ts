@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 export interface User {
     id: string;
@@ -13,7 +14,7 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    private apiUrl = 'http://localhost:5062/api/users'; // Ajusta puerto
+    private apiUrl = `${environment.apiUrl}/users`;
 
     constructor(private http: HttpClient) { }
 
@@ -33,7 +34,7 @@ export class UserService {
         return this.http.delete(`${this.apiUrl}/${id}`);
     }
     getRoles(): Observable<any[]> {
-        return this.http.get<any[]>('http://localhost:5062/api/roles');
+        return this.http.get<any[]>(`${environment.apiUrl}/roles`);
     }
     updateProfile(data: FormData): Observable<any> {
         return this.http.put(`${this.apiUrl}/profile`, data);

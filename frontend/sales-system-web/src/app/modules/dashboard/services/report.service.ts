@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ReportsService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:5062/api/reports';
+    private apiUrl = `${environment.apiUrl}/reports`;
 
     downloadSalesExcel(startDate: Date, endDate: Date) {
         const start = startDate.toISOString();

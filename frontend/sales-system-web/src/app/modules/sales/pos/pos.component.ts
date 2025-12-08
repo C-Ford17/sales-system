@@ -15,6 +15,7 @@ import { CartService } from '../services/cart.service';
 import { Product } from '../../products/interfaces/product.interface';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http'; // Para enviar la venta al backend
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-pos',
@@ -86,7 +87,7 @@ export class PosComponent implements OnInit {
     };
 
     // Llamada directa al endpoint de ventas (podrías moverlo a un SalesService)
-    this.http.post('http://localhost:5062/api/sales', saleData).subscribe({
+    this.http.post(`${environment.apiUrl}/sales`, saleData).subscribe({
       next: (res) => {
         alert('¡Venta registrada con éxito!');
         this.cartService.clearCart();
