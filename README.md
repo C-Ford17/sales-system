@@ -126,4 +126,10 @@ El proyecto incluye un `Dockerfile` optimizado para el backend.
 
 ---
 
+## Test App
+user: admin@sales.com
+password: admin123
+
+---
+
 **Desarrollado por Christian** - 2025
