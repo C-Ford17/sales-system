@@ -108,20 +108,10 @@ label {
 
 /* Ocultar espacio extra abajo */
 
-.forgot-password {
-    text-align: right;
-    margin-top: -8px;
-}
-
-.forgot-password a {
-    color: #0F4C81;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.forgot-password a:hover {
-    text-decoration: underline;
+/* Hide native browser password reveal to avoid double icon with Material */
+::ng-deep input[type="password"]::-ms-reveal,
+::ng-deep input[type="password"]::-ms-clear {
+    display: none !important;
 }
 
 .btn-submit {
